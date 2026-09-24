@@ -62,8 +62,8 @@
 
     /* Dropdown Options Dark Theme Styling */
     #ceremonySelect option {
-      background-color: #0f172a; /* Slate 900 dark blue tone */
-      color: #38bdf8;            /* Cyan text */
+      background-color: #0f172a;
+      color: #38bdf8;
       padding: 8px;
     }
   </style>
@@ -147,16 +147,27 @@
       </div>
     </div>
 
-    <!-- ATTENDANCE PRESENCE CHIPS -->
+    <!-- ATTENDANCE PRESENCE CHIPS & ADD NODE FORM -->
     <section class="mb-6 bg-slate-900/40 p-4 rounded-xl border border-slate-800">
-      <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
         <h2 class="text-xs font-mono font-bold text-slate-400 tracking-wider uppercase flex items-center gap-2">
           <span>⚡ ACTIVE PIPELINE ENGINEER NODES</span>
           <span id="activeCountBadge" class="px-2 py-0.5 text-[10px] rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800">6/6 ONLINE</span>
         </h2>
-        <span class="text-[11px] text-slate-500 font-mono">Toggle attendance before triggering DAG</span>
+        <span class="text-[11px] text-slate-500 font-mono">Toggle attendance or add guests before triggering DAG</span>
       </div>
-      <div id="attendanceChips" class="flex flex-wrap gap-2"></div>
+      
+      <div class="flex flex-wrap items-center gap-2">
+        <div id="attendanceChips" class="flex flex-wrap gap-2"></div>
+        
+        <!-- ADD ATTENDANT INPUT FIELD -->
+        <div class="flex items-center space-x-1 pl-2 border-l border-slate-800/80 my-1">
+          <input id="newEngineerInput" type="text" placeholder="Add engineer name..." class="bg-slate-950 text-xs font-mono px-3 py-1.5 rounded-lg border border-slate-800 text-cyan-300 placeholder-slate-600 focus:outline-none focus:border-cyan-500/60 w-44">
+          <button onclick="addEngineerNode()" class="px-3 py-1.5 rounded-lg bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-bold transition-all flex items-center space-x-1 shadow-sm shadow-cyan-500/10">
+            <span>＋ ADD NODE</span>
+          </button>
+        </div>
+      </div>
     </section>
 
     <!-- LIVE ENGINEER TILES MATRIX -->
@@ -329,6 +340,27 @@
       }
     }
 
+    // ADD NEW ENGINEER NODE FUNCTION
+    function addEngineerNode() {
+      const input = document.getElementById('newEngineerInput');
+      const name = input.value.trim();
+      if (!name) return;
+
+      const newId = 'guest_' + Date.now();
+      team.push({
+        id: newId,
+        name: name,
+        role: 'Guest Pipeline Engineer',
+        icon: '⚡',
+        active: true,
+        tag: 'Guest Node'
+      });
+
+      input.value = '';
+      renderAttendanceChips();
+      renderTiles();
+    }
+
     function triggerDagRun() {
       const activeMembers = getActiveEngineers();
       if (activeMembers.length === 0 || isRunning) return;
@@ -413,8 +445,17 @@
       alert('Google Chat dispatch copied to clipboard!');
     }
 
+    // KEYBOARD LISTENERS
     window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space' && !isRunning && document.getElementById('winnerModal').classList.contains('hidden')) {
+      // Allow pressing ENTER inside the add engineer text box
+      if (e.target.id === 'newEngineerInput' && e.key === 'Enter') {
+        e.preventDefault();
+        addEngineerNode();
+        return;
+      }
+
+      // Spacebar launch hotkey
+      if (e.code === 'Space' && !isRunning && document.getElementById('winnerModal').classList.contains('hidden') && e.target.tagName !== 'INPUT') {
         e.preventDefault();
         triggerDagRun();
       }
