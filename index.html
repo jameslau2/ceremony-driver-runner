@@ -222,7 +222,7 @@
   <script>
     // TEAM ROSTER CONFIGURATION
     const team = [
-      { id: 'james', name: 'James', role: 'GenAI & Engineering Lead', icon: 'gemini', active: true, tag: 'Generative AI' },
+      { id: 'james', name: 'James', role: 'GenAI & Engineering Lead', icon: '✨', active: true, tag: 'Generative AI' },
       { id: 'mufaddal', name: 'Mufaddal', role: 'Python and Unit Tests Lead', icon: 'python', active: true, tag: 'Python Core' },
       { id: 'lynn', name: 'Lynn', role: 'Continuous Improvement Lead', icon: 'ci', active: true, tag: 'Continuous Improvement' },
       { id: 'tom', name: 'Tom', role: 'Data QA & Teradata Pillar', icon: 'teradata', active: true, tag: 'Teradata & Quality' },
@@ -232,21 +232,6 @@
 
     let isRunning = false;
     let selectedWinner = null;
-
-    // GOOGLE GEMINI BRAND SPARKLE SVG
-    const geminiSvgHtml = `
-      <svg class="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="geminiGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#1BA1E3"/>
-            <stop offset="35%" stop-color="#5463E7"/>
-            <stop offset="70%" stop-color="#9333EA"/>
-            <stop offset="100%" stop-color="#EC4899"/>
-          </linearGradient>
-        </defs>
-        <path d="M12 2C12 7.523 16.477 12 22 12C16.477 12 12 16.477 12 22C12 16.477 7.523 12 2 12C7.523 12 12 7.523 12 2Z" fill="url(#geminiGrad)"/>
-      </svg>
-    `;
 
     // OFFICIAL APACHE AIRFLOW BRAND PINWHEEL SVG
     const airflowSvgHtml = `
@@ -266,17 +251,20 @@
       </svg>
     `;
 
-    // CONTINUOUS IMPROVEMENT LOGO SVG (2 Outer Circular Arrows + 2 Center Upward Arrows)
+    // CONTINUOUS IMPROVEMENT LOGO SVG (2 Broken Chasing Circular Arrows + 2 Center Upward Arrows)
     const continuousImprovementSvgHtml = `
       <svg class="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer 2-Arrow Circular Ring -->
-        <path d="M 4.5 12 A 7.5 7.5 0 0 1 19.5 12" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M 17 9.5 L 19.5 12 L 22 9.5" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M 19.5 12 A 7.5 7.5 0 0 1 4.5 12" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M 2 14.5 L 4.5 12 L 7 14.5" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- 2 Upward Arrows in Middle -->
-        <path d="M 9.2 15.5 V 8.5 M 7.5 10.2 L 9.2 8.5 L 10.9 10.2" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M 14.8 15.5 V 8.5 M 13.1 10.2 L 14.8 8.5 L 16.5 10.2" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Top-Right Chasing Arc Arrow -->
+        <path d="M 5 10 A 8 8 0 0 1 18.5 9" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M 15 9 L 18.5 9 L 17.5 5.5" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Bottom-Left Chasing Arc Arrow -->
+        <path d="M 19 14 A 8 8 0 0 1 5.5 15" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M 9 15 L 5.5 15 L 6.5 18.5" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- 2 Upward Growth Arrows in Center with Clear Buffer -->
+        <path d="M 9.5 15.5 V 8.5 M 7.5 10.5 L 9.5 8.5 L 11.5 10.5" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 14.5 15.5 V 8.5 M 12.5 10.5 L 14.5 8.5 L 16.5 10.5" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     `;
 
@@ -290,7 +278,6 @@
 
     // ICON HELPER FUNCTION
     function getMemberIconHtml(iconSymbol) {
-      if (iconSymbol === 'gemini') return geminiSvgHtml;
       if (iconSymbol === 'airflow') return airflowSvgHtml;
       if (iconSymbol === 'teradata') return teradataSvgHtml;
       if (iconSymbol === 'ci') return continuousImprovementSvgHtml;
