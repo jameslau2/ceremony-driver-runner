@@ -225,7 +225,7 @@
       { id: 'james', name: 'James', role: 'GenAI & Engineering Lead', icon: '✨', active: true, tag: 'Generative AI' },
       { id: 'mufaddal', name: 'Mufaddal', role: 'Python and Unit Tests Lead', icon: '🐍', active: true, tag: 'Python Core' },
       { id: 'lynn', name: 'Lynn', role: 'Continuous Improvement Lead', icon: '☁️', active: true, tag: 'Continuous Improvement' },
-      { id: 'tom', name: 'Tom', role: 'Data QA & Teradata Pillar', icon: '🐘', active: true, tag: 'Teradata & Quality' },
+      { id: 'tom', name: 'Tom', role: 'Data QA & Teradata Pillar', icon: 'teradata', active: true, tag: 'Teradata & Quality' },
       { id: 'mark', name: 'Mark', role: 'Airflow DAG Orchestrator', icon: 'airflow', active: true, tag: 'Airflow Workflows' },
       { id: 'thu', name: 'Thu', role: 'Snowflake DCR & Data Modeller', icon: '❄️', active: true, tag: 'Data Modelling' }
     ];
@@ -242,6 +242,21 @@
         <path d="M12 12C8.686 12 6 14.686 6 18s2.686 6 6 6V12z" fill="#00C7B7"/>
       </svg>
     `;
+
+    // TERADATA BRAND LOGO SVG (Orange circle with white 't.')
+    const teradataSvgHtml = `
+      <svg class="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="11" fill="#F35E17"/>
+        <text x="11.5" y="16" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="14.5" fill="#FFFFFF" text-anchor="middle">t.</text>
+      </svg>
+    `;
+
+    // ICON HELPER FUNCTION
+    function getMemberIconHtml(iconSymbol) {
+      if (iconSymbol === 'airflow') return airflowSvgHtml;
+      if (iconSymbol === 'teradata') return teradataSvgHtml;
+      return iconSymbol;
+    }
 
     // WEB AUDIO SYNTHESIZER
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -290,7 +305,7 @@
             ? 'bg-cyan-950/60 border-cyan-500/50 text-cyan-300 shadow-sm shadow-cyan-500/20' 
             : 'bg-slate-900 border-slate-800 text-slate-600 line-through'
         }">
-          <span class="inline-flex items-center justify-center w-5 h-5">${m.icon === 'airflow' ? airflowSvgHtml : m.icon}</span>
+          <span class="inline-flex items-center justify-center w-5 h-5">${getMemberIconHtml(m.icon)}</span>
           <span>${m.name}</span>
           <span class="text-[10px] opacity-60">${m.active ? '●' : '○'}</span>
         </button>
@@ -300,7 +315,6 @@
     function renderTiles() {
       const grid = document.getElementById('tilesGrid');
       grid.innerHTML = team.map(m => {
-        const isAirflow = m.icon === 'airflow';
         return `
           <div id="tile-${m.id}" class="node-tile p-5 rounded-2xl bg-slate-900/90 border-2 ${
             m.active ? 'border-slate-800 text-slate-200' : 'border-slate-950 opacity-40 grayscale'
@@ -308,7 +322,7 @@
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center space-x-3">
                 <div class="w-12 h-12 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-2xl shadow-inner">
-                  ${isAirflow ? airflowSvgHtml : m.icon}
+                  ${getMemberIconHtml(m.icon)}
                 </div>
                 <div>
                   <h3 class="font-header font-bold text-base text-white flex items-center gap-2">
@@ -418,11 +432,7 @@
 
     function openWinnerModal(winner) {
       const avatarElem = document.getElementById('modalAvatar');
-      if (winner.icon === 'airflow') {
-        avatarElem.innerHTML = airflowSvgHtml;
-      } else {
-        avatarElem.innerText = winner.icon;
-      }
+      avatarElem.innerHTML = getMemberIconHtml(winner.icon);
       document.getElementById('modalWinnerName').innerText = winner.name;
       document.getElementById('modalWinnerSkill').innerText = winner.role;
       document.getElementById('modalCeremonyName').innerText = document.getElementById('ceremonySelect').value;
@@ -447,14 +457,12 @@
 
     // KEYBOARD LISTENERS
     window.addEventListener('keydown', (e) => {
-      // Allow pressing ENTER inside the add engineer text box
       if (e.target.id === 'newEngineerInput' && e.key === 'Enter') {
         e.preventDefault();
         addEngineerNode();
         return;
       }
 
-      // Spacebar launch hotkey
       if (e.code === 'Space' && !isRunning && document.getElementById('winnerModal').classList.contains('hidden') && e.target.tagName !== 'INPUT') {
         e.preventDefault();
         triggerDagRun();
