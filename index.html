@@ -211,12 +211,14 @@
     let isRunning = false;
     let selectedWinner = null;
 
-    // AIRFLOW SVG ICON HELPER
+    // OFFICIAL APACHE AIRFLOW PINWHEEL SVG HELPER
     const airflowSvgHtml = `
-      <svg class="w-6 h-6 inline-block text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" opacity="0.3"/>
-        <path d="M12 4a8 8 0 100 16 8 8 0 000-16zm-1 13v-2h2v2h-2zm0-10h2v6h-2V7z"/>
-      </svg>
+    <svg class="w-7 h-7 inline-block text-cyan-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 12C12 8.686 9.314 6 6 6S0 8.686 0 12h12z" fill="#00C7B7"/>
+        <path d="M12 12C15.314 12 18 9.314 18 6s-2.686-6-6-6v12z" fill="#00ADEE"/>
+        <path d="M12 12C12 15.314 14.686 18 18 18s6-2.686 6-6H12z" fill="#00C7B7"/>
+        <path d="M12 12C8.686 12 6 14.686 6 18s2.686 6 6 6V12z" fill="#00ADEE"/>
+    </svg>
     `;
 
     // WEB AUDIO SYNTHESIZER
@@ -256,21 +258,21 @@
     }
 
     function renderAttendanceChips() {
-      const container = document.getElementById('attendanceChips');
-      const activeCount = getActiveEngineers().length;
-      document.getElementById('activeCountBadge').innerText = `${activeCount}/${team.length} ONLINE`;
+    const container = document.getElementById('attendanceChips');
+    const activeCount = getActiveEngineers().length;
+    document.getElementById('activeCountBadge').innerText = `${activeCount}/${team.length} ONLINE`;
 
-      container.innerHTML = team.map(m => `
+    container.innerHTML = team.map(m => `
         <button onclick="toggleMember('${m.id}')" class="px-3 py-1.5 rounded-lg font-mono text-xs font-semibold flex items-center space-x-2 border transition-all ${
-          m.active 
+        m.active 
             ? 'bg-cyan-950/60 border-cyan-500/50 text-cyan-300 shadow-sm shadow-cyan-500/20' 
             : 'bg-slate-900 border-slate-800 text-slate-600 line-through'
         }">
-          <span>${m.icon === 'airflow' ? '🌀' : m.icon}</span>
-          <span>${m.name}</span>
-          <span class="text-[10px] opacity-60">${m.active ? '●' : '○'}</span>
+        <span class="inline-flex items-center justify-center w-5 h-5">${m.icon === 'airflow' ? airflowSvgHtml : m.icon}</span>
+        <span>${m.name}</span>
+        <span class="text-[10px] opacity-60">${m.active ? '●' : '○'}</span>
         </button>
-      `).join('');
+    `).join('');
     }
 
     function renderTiles() {
@@ -376,11 +378,16 @@
     }
 
     function openWinnerModal(winner) {
-      document.getElementById('modalAvatar').innerText = winner.icon === 'airflow' ? '🌀' : winner.icon;
-      document.getElementById('modalWinnerName').innerText = winner.name;
-      document.getElementById('modalWinnerSkill').innerText = winner.role;
-      document.getElementById('modalCeremonyName').innerText = document.getElementById('ceremonySelect').value;
-      document.getElementById('winnerModal').classList.remove('hidden');
+    const avatarElem = document.getElementById('modalAvatar');
+    if (winner.icon === 'airflow') {
+        avatarElem.innerHTML = airflowSvgHtml;
+    } else {
+        avatarElem.innerText = winner.icon;
+    }
+    document.getElementById('modalWinnerName').innerText = winner.name;
+    document.getElementById('modalWinnerSkill').innerText = winner.role;
+    document.getElementById('modalCeremonyName').innerText = document.getElementById('ceremonySelect').value;
+    document.getElementById('winnerModal').classList.remove('hidden');
     }
 
     function closeModal() {
