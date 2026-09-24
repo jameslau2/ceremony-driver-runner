@@ -222,7 +222,7 @@
   <script>
     // TEAM ROSTER CONFIGURATION
     const team = [
-      { id: 'james', name: 'James', role: 'GenAI & Engineering Lead', icon: '✨', active: true, tag: 'Generative AI' },
+      { id: 'james', name: 'James', role: 'GenAI & Engineering Lead', icon: 'gemini', active: true, tag: 'Generative AI' },
       { id: 'mufaddal', name: 'Mufaddal', role: 'Python and Unit Tests Lead', icon: 'python', active: true, tag: 'Python Core' },
       { id: 'lynn', name: 'Lynn', role: 'Continuous Improvement Lead', icon: 'ci', active: true, tag: 'Continuous Improvement' },
       { id: 'tom', name: 'Tom', role: 'Data QA & Teradata Pillar', icon: 'teradata', active: true, tag: 'Teradata & Quality' },
@@ -232,6 +232,21 @@
 
     let isRunning = false;
     let selectedWinner = null;
+
+    // GOOGLE GEMINI BRAND SPARKLE SVG
+    const geminiSvgHtml = `
+      <svg class="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="geminiGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1BA1E3"/>
+            <stop offset="35%" stop-color="#5463E7"/>
+            <stop offset="70%" stop-color="#9333EA"/>
+            <stop offset="100%" stop-color="#EC4899"/>
+          </linearGradient>
+        </defs>
+        <path d="M12 2C12 7.523 16.477 12 22 12C16.477 12 12 16.477 12 22C12 16.477 7.523 12 2 12C7.523 12 12 7.523 12 2Z" fill="url(#geminiGrad)"/>
+      </svg>
+    `;
 
     // OFFICIAL APACHE AIRFLOW BRAND PINWHEEL SVG
     const airflowSvgHtml = `
@@ -276,6 +291,7 @@
 
     // ICON HELPER FUNCTION
     function getMemberIconHtml(iconSymbol) {
+      if (iconSymbol === 'gemini') return geminiSvgHtml;
       if (iconSymbol === 'airflow') return airflowSvgHtml;
       if (iconSymbol === 'teradata') return teradataSvgHtml;
       if (iconSymbol === 'ci') return continuousImprovementSvgHtml;
