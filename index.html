@@ -223,8 +223,8 @@
     // TEAM ROSTER CONFIGURATION
     const team = [
       { id: 'james', name: 'James', role: 'GenAI & Engineering Lead', icon: '✨', active: true, tag: 'Generative AI' },
-      { id: 'mufaddal', name: 'Mufaddal', role: 'Python and Unit Tests Lead', icon: '🐍', active: true, tag: 'Python Core' },
-      { id: 'lynn', name: 'Lynn', role: 'Continuous Improvement Lead', icon: '☁️', active: true, tag: 'Continuous Improvement' },
+      { id: 'mufaddal', name: 'Mufaddal', role: 'Python and Unit Tests Lead', icon: 'python', active: true, tag: 'Python Core' },
+      { id: 'lynn', name: 'Lynn', role: 'Continuous Improvement Lead', icon: 'ci', active: true, tag: 'Continuous Improvement' },
       { id: 'tom', name: 'Tom', role: 'Data QA & Teradata Pillar', icon: 'teradata', active: true, tag: 'Teradata & Quality' },
       { id: 'mark', name: 'Mark', role: 'Airflow DAG Orchestrator', icon: 'airflow', active: true, tag: 'Airflow Workflows' },
       { id: 'thu', name: 'Thu', role: 'Snowflake DCR & Data Modeller', icon: '❄️', active: true, tag: 'Data Modelling' }
@@ -251,10 +251,31 @@
       </svg>
     `;
 
+    // CONTINUOUS IMPROVEMENT LOGO SVG
+    const continuousImprovementSvgHtml = `
+      <svg class="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3a9 9 0 0 1 8.5 6M20.5 5.5v3.5h-3.5" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 21a9 9 0 0 1-8.5-6M3.5 18.5v-3.5h3.5" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M7 16v-3M5.5 14.5L7 13l1.5 1.5" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 16v-6M10.5 11.5L12 10l1.5 1.5" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17 16v-9M15.5 8.5L17 7l1.5 1.5" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    // OFFICIAL PYTHON BRAND LOGO SVG
+    const pythonSvgHtml = `
+      <svg class="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.898 1.002c-5.18 0-4.852 2.25-4.852 2.25l.006 2.331h4.912v.693H5.112S1 5.787 1 11.026c0 5.237 3.585 5.045 3.585 5.045h2.143v-3.003s-.115-3.585 3.585-3.585h4.945s3.432.062 3.432-3.329c0-3.39-2.923-3.152-2.923-3.152l-3.869.002zM8.88 2.583a.96.96 0 1 1 0 1.92.96.96 0 0 1 0-1.92z" fill="#3776AB"/>
+        <path d="M12.102 22.998c5.18 0 4.852-2.25 4.852-2.25l-.006-2.331h-4.912v-.693h6.852S23 18.213 23 12.974c0-5.237-3.585-5.045-3.585-5.045h-2.143v3.003s.115 3.585-3.585 3.585h-4.945s-3.432-.062-3.432 3.329c0 3.39 2.923 3.152 2.923 3.152l3.869-.002zM15.12 21.417a.96.96 0 1 1 0-1.92.96.96 0 0 1 0 1.92z" fill="#FFD43B"/>
+      </svg>
+    `;
+
     // ICON HELPER FUNCTION
     function getMemberIconHtml(iconSymbol) {
       if (iconSymbol === 'airflow') return airflowSvgHtml;
       if (iconSymbol === 'teradata') return teradataSvgHtml;
+      if (iconSymbol === 'ci') return continuousImprovementSvgHtml;
+      if (iconSymbol === 'python') return pythonSvgHtml;
       return iconSymbol;
     }
 
