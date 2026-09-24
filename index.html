@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loyalty Data Services - Agile Ceremony Driver</title>
+  
+  <!-- FAVICON: Connected Data Mesh Vector Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300d2ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='5' r='2' fill='%2300d2ff' stroke='none'/><circle cx='5' cy='12' r='2' fill='%23a855f7' stroke='none'/><circle cx='19' cy='12' r='2' fill='%23a855f7' stroke='none'/><circle cx='12' cy='19' r='2' fill='%23ec4899' stroke='none'/><path d='M12 7v10M7 12h10M6.5 6.5l11 11M17.5 6.5l-11 11' stroke='%2300d2ff' stroke-opacity='0.4' stroke-dasharray='2 2'/><path d='M12 7l-5 3.5v3l5 3.5 5-3.5v-3z' stroke='%2300d2ff' stroke-width='1.5'/></svg>">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
@@ -55,6 +59,13 @@
       stroke-dasharray: 8 12;
       animation: conduitFlow 1.2s linear infinite;
     }
+
+    /* Dropdown Options Dark Theme Styling */
+    #ceremonySelect option {
+      background-color: #0f172a; /* Slate 900 dark blue tone */
+      color: #38bdf8;            /* Cyan text */
+      padding: 8px;
+    }
   </style>
 </head>
 <body class="min-h-screen pb-12">
@@ -97,11 +108,11 @@
       <div class="flex items-center space-x-4 font-mono text-xs">
         <div class="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 flex items-center space-x-2 text-slate-300">
           <span>SERVICE:</span>
-          <select id="ceremonySelect" class="bg-transparent text-cyan-400 font-semibold focus:outline-none cursor-pointer">
-            <option value="Daily Standup">Daily Standup</option>
-            <option value="Sprint Planning">Sprint Planning</option>
-            <option value="Sprint Retrospective">Sprint Retrospective</option>
-            <option value="Backlog Refinement">Backlog Refinement</option>
+          <select id="ceremonySelect" class="bg-slate-900 text-cyan-400 font-semibold focus:outline-none cursor-pointer rounded px-1 border border-slate-800/50">
+            <option value="Daily Standup" class="bg-slate-900 text-cyan-400">Daily Standup</option>
+            <option value="Sprint Planning" class="bg-slate-900 text-cyan-400">Sprint Planning</option>
+            <option value="Sprint Retrospective" class="bg-slate-900 text-cyan-400">Sprint Retrospective</option>
+            <option value="Backlog Refinement" class="bg-slate-900 text-cyan-400">Backlog Refinement</option>
           </select>
         </div>
 
@@ -171,7 +182,7 @@
       <div class="absolute -top-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>
       
       <div class="inline-block p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 mb-4">
-        <span id="modalAvatar" class="text-6xl"></span>
+        <span id="modalAvatar" class="text-6xl inline-flex items-center justify-center"></span>
       </div>
 
       <p class="text-xs font-mono text-emerald-400 font-bold tracking-widest uppercase mb-1">DAG RUN SUCCESSFUL · ORCHESTRATOR ELECTED</p>
@@ -201,24 +212,24 @@
     // TEAM ROSTER CONFIGURATION
     const team = [
       { id: 'james', name: 'James', role: 'GenAI & Engineering Lead', icon: '✨', active: true, tag: 'Generative AI' },
-      { id: 'mufaddal', name: 'Mufaddal', role: 'Python Lead', icon: '🐍', active: true, tag: 'Python Core' },
-      { id: 'lynn', name: 'Lynn', role: 'AWS S3 & Ingestion Specialist', icon: '☁️', active: true, tag: 'AWS Infrastructure' },
+      { id: 'mufaddal', name: 'Mufaddal', role: 'Python and Unit Tests Lead', icon: '🐍', active: true, tag: 'Python Core' },
+      { id: 'lynn', name: 'Lynn', role: 'Continuous Improvement Lead', icon: '☁️', active: true, tag: 'Continuous Improvement' },
       { id: 'tom', name: 'Tom', role: 'Data QA & Teradata Pillar', icon: '🐘', active: true, tag: 'Teradata & Quality' },
       { id: 'mark', name: 'Mark', role: 'Airflow DAG Orchestrator', icon: 'airflow', active: true, tag: 'Airflow Workflows' },
-      { id: 'thu', name: 'Thu', role: 'Snowflake DCR & Security Lead', icon: '❄️', active: true, tag: 'Snowflake Clean Rooms' }
+      { id: 'thu', name: 'Thu', role: 'Snowflake DCR & Data Modeller', icon: '❄️', active: true, tag: 'Data Modelling' }
     ];
 
     let isRunning = false;
     let selectedWinner = null;
 
-    // OFFICIAL APACHE AIRFLOW PINWHEEL SVG HELPER
+    // OFFICIAL APACHE AIRFLOW BRAND PINWHEEL SVG
     const airflowSvgHtml = `
-    <svg class="w-7 h-7 inline-block text-cyan-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 12C12 8.686 9.314 6 6 6S0 8.686 0 12h12z" fill="#00C7B7"/>
+      <svg class="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 12C12 8.686 9.314 6 6 6S0 8.686 0 12h12z" fill="#017CEE"/>
         <path d="M12 12C15.314 12 18 9.314 18 6s-2.686-6-6-6v12z" fill="#00ADEE"/>
-        <path d="M12 12C12 15.314 14.686 18 18 18s6-2.686 6-6H12z" fill="#00C7B7"/>
-        <path d="M12 12C8.686 12 6 14.686 6 18s2.686 6 6 6V12z" fill="#00ADEE"/>
-    </svg>
+        <path d="M12 12C12 15.314 14.686 18 18 18s6-2.686 6-6H12z" fill="#E43925"/>
+        <path d="M12 12C8.686 12 6 14.686 6 18s2.686 6 6 6V12z" fill="#00C7B7"/>
+      </svg>
     `;
 
     // WEB AUDIO SYNTHESIZER
@@ -240,7 +251,7 @@
 
     function playVictoryChime() {
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      const notes = [523.25, 659.25, 783.99, 1046.50];
       notes.forEach((freq, idx) => {
         setTimeout(() => playBeep(freq, 'triangle', 0.3), idx * 90);
       });
@@ -258,21 +269,21 @@
     }
 
     function renderAttendanceChips() {
-    const container = document.getElementById('attendanceChips');
-    const activeCount = getActiveEngineers().length;
-    document.getElementById('activeCountBadge').innerText = `${activeCount}/${team.length} ONLINE`;
+      const container = document.getElementById('attendanceChips');
+      const activeCount = getActiveEngineers().length;
+      document.getElementById('activeCountBadge').innerText = `${activeCount}/${team.length} ONLINE`;
 
-    container.innerHTML = team.map(m => `
+      container.innerHTML = team.map(m => `
         <button onclick="toggleMember('${m.id}')" class="px-3 py-1.5 rounded-lg font-mono text-xs font-semibold flex items-center space-x-2 border transition-all ${
-        m.active 
+          m.active 
             ? 'bg-cyan-950/60 border-cyan-500/50 text-cyan-300 shadow-sm shadow-cyan-500/20' 
             : 'bg-slate-900 border-slate-800 text-slate-600 line-through'
         }">
-        <span class="inline-flex items-center justify-center w-5 h-5">${m.icon === 'airflow' ? airflowSvgHtml : m.icon}</span>
-        <span>${m.name}</span>
-        <span class="text-[10px] opacity-60">${m.active ? '●' : '○'}</span>
+          <span class="inline-flex items-center justify-center w-5 h-5">${m.icon === 'airflow' ? airflowSvgHtml : m.icon}</span>
+          <span>${m.name}</span>
+          <span class="text-[10px] opacity-60">${m.active ? '●' : '○'}</span>
         </button>
-    `).join('');
+      `).join('');
     }
 
     function renderTiles() {
@@ -325,7 +336,6 @@
       isRunning = true;
       document.getElementById('triggerBtn').disabled = true;
 
-      // Clear previous styles
       team.forEach(m => {
         const tile = document.getElementById(`tile-${m.id}`);
         if (tile) tile.classList.remove('active-scan', 'tile-winner-lock');
@@ -334,15 +344,13 @@
       let currentIndex = 0;
       let passes = 0;
       const totalPasses = 20 + Math.floor(Math.random() * 10);
-      let speed = 60; // ms
+      let speed = 60;
 
       function step() {
-        // Unhighlight previous
         const prevMember = activeMembers[(currentIndex - 1 + activeMembers.length) % activeMembers.length];
         const prevTile = document.getElementById(`tile-${prevMember.id}`);
         if (prevTile) prevTile.classList.remove('active-scan');
 
-        // Highlight current
         const currMember = activeMembers[currentIndex];
         const currTile = document.getElementById(`tile-${currMember.id}`);
         if (currTile) currTile.classList.add('active-scan');
@@ -353,10 +361,9 @@
         currentIndex = (currentIndex + 1) % activeMembers.length;
 
         if (passes < totalPasses) {
-          speed += passes * 2.5; // Natural decay deceleration
+          speed += passes * 2.5;
           setTimeout(step, speed);
         } else {
-          // Lock winner
           selectedWinner = currMember;
           if (currTile) {
             currTile.classList.remove('active-scan');
@@ -378,16 +385,16 @@
     }
 
     function openWinnerModal(winner) {
-    const avatarElem = document.getElementById('modalAvatar');
-    if (winner.icon === 'airflow') {
+      const avatarElem = document.getElementById('modalAvatar');
+      if (winner.icon === 'airflow') {
         avatarElem.innerHTML = airflowSvgHtml;
-    } else {
+      } else {
         avatarElem.innerText = winner.icon;
-    }
-    document.getElementById('modalWinnerName').innerText = winner.name;
-    document.getElementById('modalWinnerSkill').innerText = winner.role;
-    document.getElementById('modalCeremonyName').innerText = document.getElementById('ceremonySelect').value;
-    document.getElementById('winnerModal').classList.remove('hidden');
+      }
+      document.getElementById('modalWinnerName').innerText = winner.name;
+      document.getElementById('modalWinnerSkill').innerText = winner.role;
+      document.getElementById('modalCeremonyName').innerText = document.getElementById('ceremonySelect').value;
+      document.getElementById('winnerModal').classList.remove('hidden');
     }
 
     function closeModal() {
@@ -406,7 +413,6 @@
       alert('Google Chat dispatch copied to clipboard!');
     }
 
-    // KEYBOARD SHORTCUT (SPACEBAR)
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space' && !isRunning && document.getElementById('winnerModal').classList.contains('hidden')) {
         e.preventDefault();
@@ -414,7 +420,6 @@
       }
     });
 
-    // INIT
     updateLiveDate();
     setInterval(updateLiveDate, 60000);
     renderAttendanceChips();
